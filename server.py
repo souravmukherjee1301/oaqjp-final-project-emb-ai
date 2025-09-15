@@ -11,11 +11,15 @@ def emotion_detector_route():
     """
     text_to_analyse = request.args.get("textToAnalyze")
 
-    if not text_to_analyse:
-        return jsonify({"error": "Please provide a 'text' query parameter"}), 400
-
     # Call emotion detection function
     emotions = emotion_detector(text_to_analyse)
+
+    # Handle invalid or blank input (dominant_emotion None or dict None)
+    if emotions is None or emotions.get("dominant_emotion") is None:
+        return "Invalid text! Please try again!"
+
+    if not text_to_analyse:
+        return jsonify({"error": "Please provide a 'text' query parameter"}), 400
 
     # Format response message
     response_msg = (
