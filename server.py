@@ -1,3 +1,6 @@
+"""
+Flask web server for emotion detection using Watson NLP.
+"""
 from flask import Flask, render_template, request, jsonify
 from EmotionDetection.emotion_detection import emotion_detector
 
@@ -6,9 +9,18 @@ app = Flask(__name__)
 @app.route("/emotionDetector", methods=["GET"])
 def emotion_detector_route():
     """
-    Flask route to detect emotions in a given statement.
-    Expects a query parameter 'text'.
+    Route: /emotionDetector
+    Description:
+        Detects emotions in a given text using the emotion_detector function.
+
+    Query Parameters:
+        textToAnalyze (str): The input text for emotion detection.
+
+    Returns:
+        str: A formatted string with the detected emotions and dominant emotion,
+             or an error message if input is invalid.
     """
+
     text_to_analyse = request.args.get("textToAnalyze")
 
     # Call emotion detection function
@@ -36,4 +48,12 @@ def emotion_detector_route():
 
 @app.route("/")
 def render_index_page():
+    """
+    Route: /
+    Description:
+        Renders the home page (index.html) for the web application.
+
+    Returns:
+        str: Rendered HTML template for the home page.
+    """
     return render_template('index.html')
